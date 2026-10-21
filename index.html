@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Permohonan Maaf</title>
+<style>
+  :root{
+    --bg:#10252b; --bg2:#1b3d45; --paper:#fbf7ee; --ink:#1d2b2f;
+    --gold:#f2b94b; --green:#3f9d6b; --red:#c8553d;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{
+    font-family:Georgia,"Times New Roman",serif;
+    background:radial-gradient(circle at 30% 20%,var(--bg2),var(--bg));
+    color:var(--ink);overflow:hidden;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .screen{display:none;width:100%;padding:20px;text-align:center}
+  .screen.active{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100%}
+
+  /* Tahap 1: amplop */
+  #intro p{color:#cfe3e6;margin-top:28px;font-size:1.05rem;letter-spacing:.02em}
+  .envelope{
+    width:min(260px,70vw);aspect-ratio:1.5;background:var(--paper);border-radius:8px;
+    position:relative;cursor:pointer;border:0;
+    box-shadow:0 20px 40px rgba(0,0,0,.4);animation:float 3s ease-in-out infinite;
+  }
+  .envelope::before{
+    content:"";position:absolute;inset:0;border-radius:8px;
+    background:linear-gradient(to bottom right,transparent 49.5%,#e8e0cc 50%) left/50% 100% no-repeat,
+               linear-gradient(to bottom left,transparent 49.5%,#e8e0cc 50%) right/50% 100% no-repeat;
+  }
+  .envelope .flap{
+    position:absolute;left:0;top:0;width:100%;height:55%;background:#efe7d3;
+    clip-path:polygon(0 0,100% 0,50% 100%);transform-origin:top;transition:transform .6s;
+  }
+  .envelope .seal{
+    position:absolute;left:50%;top:48%;width:46px;height:46px;border-radius:50%;
+    background:var(--red);transform:translate(-50%,-50%);z-index:2;
+    display:grid;place-items:center;color:#fff;font-size:1.3rem;
+    animation:pulse 1.6s infinite;
+  }
+  .envelope.open .flap{transform:rotateX(180deg)}
+  .envelope.open{animation:none;transform:scale(1.08);transition:transform .5s}
+  @keyframes float{50%{transform:translateY(-12px)}}
+  @keyframes pulse{50%{transform:translate(-50%,-50%) scale(1.15)}}
+
+  /* Tahap 2: surat */
+  .letter{
+    background:var(--paper);max-width:520px;width:100%;padding:28px 24px;border-radius:10px;
+    box-shadow:0 20px 50px rgba(0,0,0,.45);text-align:left;line-height:1.7;
+    animation:rise .7s ease both;
+  }
+  .letter h1{font-size:1.4rem;margin-bottom:12px}
+  .letter p{margin-bottom:12px;font-size:1.02rem}
+  .letter .sign{margin-top:16px;font-style:italic}
+  .line{opacity:0;transform:translateY(8px);animation:rise .6s ease forwards}
+  @keyframes rise{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
+
+  .choices{display:flex;gap:14px;margin-top:22px;justify-content:center;flex-wrap:wrap;min-height:54px}
+  button.btn{
+    font:inherit;font-size:1.05rem;padding:13px 22px;border:0;border-radius:999px;
+    color:#fff;cursor:pointer;transition:transform .15s,box-shadow .15s;
+  }
+  #yes{background:var(--green);box-shadow:0 6px 16px rgba(63,157,107,.45);animation:beat 1.4s infinite}
+  #yes:hover{transform:scale(1.08)}
+  #no{background:var(--red)}
+  #no.run{position:fixed;z-index:20;transition:left .25s cubic-bezier(.2,1.4,.4,1),top .25s cubic-bezier(.2,1.4,.4,1)}
+  @keyframes beat{50%{transform:scale(1.07)}}
+  #hint{margin-top:12px;min-height:1.4em;font-size:.95rem;color:#8a4a3a;font-style:italic}
+
+  /* Tahap 3: terima kasih */
+  #thanks h2{color:var(--gold);font-size:clamp(2rem,8vw,3.4rem);animation:pop .8s cubic-bezier(.2,1.5,.4,1) both}
+  #thanks p{color:#e3f0f1;max-width:480px;line-height:1.7;margin-top:14px;animation:rise .8s .4s ease both}
+  .heart{font-size:4rem;animation:beat 1s infinite}
+  @keyframes pop{from{transform:scale(.2);opacity:0}to{transform:scale(1);opacity:1}}
+  .confetti{position:fixed;top:-20px;width:10px;height:14px;z-index:30;pointer-events:none;animation:fall linear forwards}
+  @keyframes fall{to{transform:translateY(110vh) rotate(720deg)}}
+
+  @media (prefers-reduced-motion:reduce){*{animation-duration:.01s!important;transition-duration:.01s!important}}
+</style>
+</head>
+<body>
+
+<!-- TAHAP 1 -->
+<section id="intro" class="screen active">
+  <button class="envelope" id="env" aria-label="Buka surat">
+    <span class="flap"></span><span class="seal">🙏</span>
+  </button>
+  <p>Ada surat untuk rapa. Ketuk untuk membuka.</p>
+</section>
+
+<!-- TAHAP 2 -->
+<section id="letter" class="screen">
+  <div class="letter">
+    <h1>Kepada Yth. rapa</h1>
+    <p class="line" style="animation-delay:.3s">Assalamu'alaikum, rapa.</p>
+    <p class="line" style="animation-delay:1s">Saya ingin meminta maaf yang sebesar-besarnya atas sikap saya yang lancang dan perkataan saya yang sombong ketika di game pas kemaren.</p>
+    <p class="line" style="animation-delay:2s">Seharusnya saya lebih menghormati kamu sebagai exp yang lebih senior yang jauh lebih berpengalaman. Saya menyesal dan berjanji akan menjaga ucapan dan sikap saya ke depannya.</p>
+    <p class="line" style="animation-delay:3s">Semoga rapa berkenan memaafkan saya.</p>
+    <p class="line sign" style="animation-delay:3.6s">Hormat saya,<br>Syakir</p>
+  </div>
+  <div class="choices" id="choices" style="opacity:0">
+    <button class="btn" id="yes">Dimaafkan 😊</button>
+    <button class="btn" id="no">Tidak dimaafkan</button>
+  </div>
+  <div id="hint"></div>
+</section>
+
+<!-- TAHAP 3 -->
+<section id="thanks" class="screen">
+  <div class="heart">💛</div>
+  <h2>Terima kasih, Rapaa!</h2>
+  <p>Terima kasih banyak sudah memaafkan saya. Saya akan belajar menjadi rekan yang lebih rendah hati dan menghormati Rapaa. Mohon bimbingannya selalu.</p>
+</section>
+
+<script>
+  const $ = id => document.getElementById(id);
+  const show = id => {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    $(id).classList.add('active');
+  };
+
+  // Tahap 1 -> 2: klik amplop
+  $('env').addEventListener('click', () => {
+    $('env').classList.add('open');
+    setTimeout(() => {
+      show('letter');
+      setTimeout(() => { $('choices').style.transition = 'opacity .8s'; $('choices').style.opacity = 1; }, 4400);
+    }, 900);
+  });
+
+  // Tombol "Tidak dimaafkan" menghindar
+  const no = $('no'), hint = $('hint');
+  const excuses = [
+    'Eh, tombolnya kabur 😅', 'Tidak bisa dipilih, rap 🙏', 'Hampir kena, tapi licin!',
+    'Tombolnya malu 🙈', 'Coba tombol hijau saja ya 😊', 'Maaf, tombol ini sedang libur'
+  ];
+  let count = 0;
+
+  function dodge() {
+    const w = no.offsetWidth, h = no.offsetHeight, pad = 12;
+    no.classList.add('run');
+    const maxX = window.innerWidth - w - pad, maxY = window.innerHeight - h - pad;
+    let x, y, tries = 0;
+    const cx = parseFloat(no.style.left) || 0, cy = parseFloat(no.style.top) || 0;
+    do {
+      x = pad + Math.random() * (maxX - pad);
+      y = pad + Math.random() * (maxY - pad);
+      tries++;
+    } while (Math.hypot(x - cx, y - cy) < 150 && tries < 20);
+    no.style.left = x + 'px';
+    no.style.top = y + 'px';
+    hint.textContent = excuses[count++ % excuses.length];
+  }
+
+  // Menghindar saat kursor mendekat, disentuh, atau difokus lewat keyboard
+  document.addEventListener('pointermove', e => {
+    if (!$('letter').classList.contains('active')) return;
+    const r = no.getBoundingClientRect();
+    const d = Math.hypot(e.clientX - (r.left + r.width / 2), e.clientY - (r.top + r.height / 2));
+    if (d < 90) dodge();
+  });
+  no.addEventListener('pointerenter', dodge);
+  no.addEventListener('pointerdown', e => { e.preventDefault(); dodge(); });
+  no.addEventListener('touchstart', e => { e.preventDefault(); dodge(); }, { passive: false });
+  no.addEventListener('focus', () => { dodge(); no.blur(); });
+  no.addEventListener('click', e => { e.preventDefault(); dodge(); });
+
+  // Tombol dimaafkan -> terima kasih + konfeti
+  $('yes').addEventListener('click', () => {
+    no.style.display = 'none';
+    show('thanks');
+    const colors = ['#f2b94b', '#3f9d6b', '#c8553d', '#fbf7ee', '#6cc3d5'];
+    for (let i = 0; i < 90; i++) {
+      const c = document.createElement('div');
+      c.className = 'confetti';
+      c.style.left = Math.random() * 100 + 'vw';
+      c.style.background = colors[i % colors.length];
+      c.style.animationDuration = 2.5 + Math.random() * 3 + 's';
+      c.style.animationDelay = Math.random() * 1.5 + 's';
+      document.body.appendChild(c);
+      setTimeout(() => c.remove(), 8000);
+    }
+  });
+</script>
+</body>
+</html>
